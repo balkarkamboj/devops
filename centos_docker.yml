@@ -1,0 +1,28 @@
+---
+- name: Docker installation
+  hosts: CENTOS
+  remote_user: root
+  become: true
+  tasks:
+    - name: Add Docker REPO
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+
+    - name: Install packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+        - docker
+      
+
+
+    - name: Start and Enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
