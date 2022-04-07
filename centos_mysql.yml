@@ -1,0 +1,37 @@
+---
+- name: Install MySQL
+  hosts: CENTOS
+  remote_user: root
+  gather_facts: true
+  tasks:
+
+    - name: Installing Repo
+      yum: 
+        name: http://dev.mysql.com/get/mysql57-community-release-el6-7.noarch.rpm
+        state: present
+    
+    - name: Transfer package
+      copy: 
+        src: /root/push/lib64sasl2-2.1.27-3-omv4002.x86_64.rpm 
+        dest: /tmp/ 
+
+    - name: Install package
+      yum:
+         name: /tmp/lib64sasl2-2.1.27-3-omv4002.x86_64.rpm
+         state: present
+
+    - name: "Installing MySQL 5.7"
+      yum: 
+        name: mysql-community-server 
+        skip_broken: yes 
+        state: present
+
+    - name: Start the MySQL service
+      service: 
+        name: mysqld
+        state: started
+        enabled: true
+
+    - name: Find MySQL root password
+      shell: "echo `grep 'temporary.*root@localhost' /var/log/mysqld.log | sed 's/.*root@localhost: //'`"
+      register: mysql_root_pass
