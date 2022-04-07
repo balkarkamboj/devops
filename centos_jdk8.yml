@@ -6,6 +6,6 @@
   tasks:
     - name: Install package
       yum:
-         name: /tmp/jdk-8u202-linux-x64.rpm
+         name: /root/push/jdk-8u202-linux-x64.rpm
          state: present
  
