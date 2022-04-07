@@ -1,0 +1,15 @@
+---
+- name: JDK 8 installation
+  hosts: CENTOS
+  become: true
+  remote_user: root
+  tasks:
+  
+    - name: Transfer package
+      copy: src=/root/push/jdk-8u202-linux-x64.rpm dest=/tmp/ 
+
+    - name: Install package
+      yum:
+         name: /tmp/jdk-8u202-linux-x64.rpm
+         state: present
+ 
